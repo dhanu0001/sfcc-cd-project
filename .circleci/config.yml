@@ -6,7 +6,7 @@ orbs:
 parameters:
   deploy_branch:
     type: string
-    default: "*"
+    default: "slack-notifications"
 
 jobs:
   build-notify:
@@ -39,7 +39,7 @@ jobs:
     
       - when:
           condition:
-            equal: [ "*", << pipeline.git.branch >> ]
+            equal: [ "slack-notifications", << pipeline.git.branch >> ]
           steps:
             - run: echo "I am on slack-notification [branch]"
                         
@@ -168,7 +168,7 @@ workflows:
           filters:
             branches:
               only:
-                - "*"
+                - slack-notifications
       # - notify:
       #    requires:
       #      - build-notify
