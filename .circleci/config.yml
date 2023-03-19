@@ -37,11 +37,11 @@ jobs:
       # - notify_slack_error
       # - notify_slack_pass
     
-      # - when:
-      #     condition:
-      #       equal: [ CXDO-578/slack-notifications, << pipeline.git.branch >> ]
-      #     steps:
-      #       - run: echo "I am on slack-notification [branch]"
+      - when:
+          condition:
+            equal: [ main, << pipeline.git.branch >> ]
+          steps:
+            - run: echo "I am on slack-notification [branch]"
                         
 workflows:
   main-workflow:
@@ -168,7 +168,7 @@ workflows:
           filters:
             branches:
               only:
-                - circleci-project-setup
+                - main
       # - notify:
       #    requires:
       #      - build-notify
