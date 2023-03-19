@@ -39,7 +39,7 @@ jobs:
     
       - when:
           condition:
-            equal: [ main, << pipeline.git.branch >> ]
+            equal: [ "*", << pipeline.git.branch >> ]
           steps:
             - run: echo "I am on slack-notification [branch]"
                         
