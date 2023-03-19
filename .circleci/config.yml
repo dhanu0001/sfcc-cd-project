@@ -35,13 +35,7 @@ jobs:
           command: |
             sfcc-ci sandbox:list
       # - notify_slack_error
-      # - notify_slack_pass
-    
-      - when:
-          condition:
-            equal: [ "slack-notifications", << pipeline.git.branch >> ]
-          steps:
-            - run: echo "I am on slack-notification [branch]"
+      # - notify_slack_pass 
                         
 workflows:
   main-workflow:
