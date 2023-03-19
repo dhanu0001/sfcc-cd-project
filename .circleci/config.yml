@@ -6,7 +6,7 @@ orbs:
 parameters:
   deploy_branch:
     type: string
-    default: "circleci-project-setup"
+    default: "main"
 
 jobs:
   build-notify:
