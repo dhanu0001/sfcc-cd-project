@@ -2,11 +2,27 @@ version: 2.1
 
 orbs:
   slack: circleci/slack@4.1.1
+  continuation: circleci/continuation@0.1.2
+  
+defaults: &defaults
+  SOME_VARIABLE: "SFCC_CI_SETUP"
 
+dev-env: &dev-env
+  environment:
+    <<: *defaults
 parameters:
   deploy_branch:
     type: string
-    default: "circleci-project-setup"
+    default: "slack-notifcations"
+  commit_message:
+    type: string
+    default: "slack-notifcations"
+
+
+# parameters:
+#   deploy_branch:
+#     type: string
+#     default: "slack-notifcations"
 
 jobs:
   build-notify:
@@ -34,6 +50,30 @@ jobs:
           name: List of sandboxes
           command: |
             sfcc-ci sandbox:list
+  test-hook:
+    docker:
+      - image: cimg/node:17.2.0
+    resource_class: small
+    environment:
+      <<: *defaults
+    steps:
+      - when:
+          condition:
+            matches: { pattern: "^\\[ci\\].+$", value: << pipeline.parameters.commit_message >> }
+          steps:
+            - run:
+                name: Test condition step
+                command: |
+                  echo "Should only run on commit with [ci] tag"
+            - run:
+                name: Generate config
+                command: |
+                  echo $(git log --format=%B -n 1 $CIRCLE_SHA1)
+                  export GIT_COMMIT_MESSAGE=$(git log --format=%B -n 1 $CIRCLE_SHA1)
+                  yq -i ".parameters.commit_message.default = \"$GIT_COMMIT_MESSAGE\"" ./.circleci/config.yml
+            - continuation/continue:
+                  configuration_path: ./.circleci/config.yml
+
       # - notify_slack_error
       # - notify_slack_pass
     
@@ -44,11 +84,21 @@ jobs:
       #       - run: echo "I am on slack-notification [branch]"
                         
 workflows:
+  version: 2
   main-workflow:
     jobs:
       - build-notify:
           context:
             - slack-notifications
+      - test-hook:
+          filters:
+            branches:
+              only:
+                - << pipeline.parameters.deploy_branch >>
+          context:
+            - slack-notifications
+          requires:
+            - build-notify
           post-steps:
             - slack/notify:
                 custom: |
@@ -103,6 +153,7 @@ workflows:
                         	]
                         }
                 event: fail
+              on_pull_requests: true
             
             - slack/notify:
                 event: pass
@@ -140,6 +191,10 @@ workflows:
                                         {
                                             "type": "mrkdwn",
                                             "text": "*Commit-ID*: $CIRCLE_SHA1"
+                                        },
+                                        {
+                                            "type": "mrkdwn",
+                                            "text": "*Pull-Request*: $CI_PULL_REQUEST"
                                         }
                         			]
                         		},
@@ -165,10 +220,7 @@ workflows:
                         		}
                         	]
                         }
-          filters:
-            branches:
-              only:
-                - circleci-project-setup
+              on_pull_requests: true
       # - notify:
       #    requires:
       #      - build-notify
