@@ -1,10 +1,4 @@
-version: 2.1
-
-parameters:
-  CIRCLE_JOB:
-    type: string
-    default: "build"
-
+version: 2
 general:
   branches:
     only:
@@ -18,17 +12,11 @@ jobs:
       - run:
           name: Trigger the Build Job
           command: |
-            curl -u $CIRCLE_TOKEN: \
-              -d build_parameters[CIRCLE_JOB]=build \
-              https://circleci.com/api/v1.1/project/gh/dhanu0001/sfcc-cd-project-A/build/tree/Test-automation-builds?circle-token=782ddf3c2db60b7ed64ac50489a16970899542c0"
-      # - run:
-      #     name: Trigger the Build Job
-      #     command: |
-      #       printf "Triggering an "sfcc-cd-project" build on the Test-automation-builds branch\n\n"
+            printf "Triggering an "sfcc-cd-project" build on the Test-automation-builds branch\n\n"
 
-      #       BUILD_INFO=$(curl -X POST -H -d \
-      #           "{}" \
-      #           "https://circleci.com/api/v1/project/dhanu0001/sfcc-cd-project-A/tree/Test-automation-builds?circle-token=782ddf3c2db60b7ed64ac50489a16970899542c0")
+            BUILD_INFO=$(curl -X POST -H -d \
+                "{}" \
+                "https://circleci.com/api/v1/project/dhanu0001/sfcc-cd-project-A/tree/Test-automation-builds?circle-token=782ddf3c2db60b7ed64ac50489a16970899542c0")
 
-      #       printf "\n\nBuild triggered\n\n"
-      #       printf "Follow the progress of the build on \nhttps://circleci.com/gh/dhanu0001/sfcc-cd-project-A/tree/Test-automation-builds"
+            printf "\n\nBuild triggered\n\n"
+            printf "Follow the progress of the build on \nhttps://circleci.com/gh/dhanu0001/sfcc-cd-project-A/tree/Test-automation-builds"
