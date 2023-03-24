@@ -13,7 +13,7 @@ jobs:
           name: Trigger build in another project
           command: |
             curl -u 782ddf3c2db60b7ed64ac50489a16970899542c0: \
-              -d build_parameters[CIRCLE_JOB]=build \
+              -d $CIRCLE_JOB=build \
               https://circleci.com/api/v1.1/project/gh/dhanu0001/sfcc-cd-project/build
       
       # - run:
