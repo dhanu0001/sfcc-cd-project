@@ -26,4 +26,3 @@ jobs:
   build:
     docker:
       - image: spotify/alpine
-
