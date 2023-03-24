@@ -56,4 +56,3 @@ executors:
   default:
     docker:
     - image: bash:4.4.19
-version: 2.1
