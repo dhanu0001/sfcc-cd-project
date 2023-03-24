@@ -3,6 +3,7 @@ version: 2.1
 orbs:
   trigger-circleci-job-orb: zzish/trigger-circleci-job-orb@5.0.6
   
+jobs:
   build:
     docker:
       - image: circleci/openjdk:11-jdk
