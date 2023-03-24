@@ -1,58 +1,27 @@
 version: 2.1
-  
-# This code is licensed from CircleCI to the user under the MIT license.
-# See here for details: https://circleci.com/developer/orbs/licensing
-commands:
-  trigger:
-    parameters:
-      branch:
-        default: main
-        description: name of your branch
-        type: string
-      job:
-        description: name of the job you want to run
-        type: string
-      organization:
-        dafault: dhanu0001
-        description: name of your CircleCI organization
-        type: string
-      repository:
-        default: sfcc-cd-automation
-        description: name of your repository
-        type: string
-      token:
-        deafult: 782ddf3c2db60b7ed64ac50489a16970899542c0
-        description: token that can be used to access the CircleCI API
-        type: string
-      vcs-type:
-        default: github
-        description: chosen VCS (either github or bitbucket)
-        type: string
+
+orbs:
+  circleci: circleci/cli@0.1.5
+
+jobs:
+  trigger-build:
+    executor: circleci/node:10.15.3
     steps:
-    - run:
-        command: |
-          curl -X POST \
-          -d '{"branch":"<< parameters.branch >>"}' \
-          https://circleci.com/api/v1.1/project/<< parameters.vcs-type >>/<< parameters.organization >>/<< parameters.repository >>/build?circle-token=<< parameters.token >>
-        name: Trigger a job
-description: |
-  A simple circleci job trigger orb
-examples:
-  trigger-job:
-    description: invoke and run the circleci trigger jobs orb
-    usage:
-      orbs:
-        trigger-circleci-job-orb: zzish/trigger-circleci-job-orb@1.0.0
-      version: 2.1
-      workflows:
-        foo:
-          jobs:
-          - trigger-circleci-job-orb/trigger:
-              job: baz
-              organization: foo
-              repository: bar
-              token: ${CIRCLECI_API_TOKEN}
-executors:
-  default:
-    docker:
-    - image: bash:4.4.19
+      - checkout
+      - circleci/setup-cli
+      - run:
+          name: Trigger build in another repository
+          command: |
+            circleci build dhanu0001//sfcc-cd-project-A \
+            --branch Test-automation-builds \
+            --revision <commit-hash> \
+            --token "782ddf3c2db60b7ed64ac50489a16970899542c0"
+
+workflows:
+  version: 2
+  build-and-trigger:
+    jobs:
+      - trigger-build:
+          filters:
+            branches:
+              only: slack-notifications
