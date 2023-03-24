@@ -18,7 +18,6 @@ jobs:
             --token "782ddf3c2db60b7ed64ac50489a16970899542c0"
 
 workflows:
-  version: 2
     jobs:
       - trigger-build:
           filters:
