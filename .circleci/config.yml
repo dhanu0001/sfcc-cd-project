@@ -29,10 +29,10 @@ jobs:
 
             printf "\n\nBuild triggered\n\n"
             printf "Follow the progress of the build on \nhttps://circleci.com/gh/dhanu0001/sfcc-cd-project/tree/Test-automation-builds"
-      - when: on_hold
-        run: echo "Build triggered by API request"
+       - when: on_hold
+         run: echo "Build triggered by API request"
 
 workflows:
-  build-and-trigger:
+  main-workflow:
     jobs:
       - build
