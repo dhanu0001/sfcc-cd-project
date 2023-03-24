@@ -5,8 +5,6 @@ parameters:
     type: string
     default: "Test-automation-builds"
   
-
-
 general:
   branches:
     only:
@@ -31,6 +29,6 @@ jobs:
             printf "Follow the progress of the build on \nhttps://circleci.com/gh/dhanu0001/sfcc-cd-project-A/tree/Test-automation-builds"
 
 workflows:
-  main-workflow:
+  build-and-trigger:
     jobs:
-      - build
+      - build 
