@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  circleci: circleci/cli@0.1.5
+    circleci-cli: circleci/circleci-cli@0.1.9
 
 jobs:
   trigger-build:
