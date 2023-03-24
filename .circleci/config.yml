@@ -10,16 +10,23 @@ jobs:
 
     steps:
       - run:
-          name: Trigger the Build Job
+          name: Trigger build in another project
           command: |
-            printf "Triggering an "sfcc-cd-project" build on the Test-automation-builds branch\n\n"
+            curl -u 782ddf3c2db60b7ed64ac50489a16970899542c0: \
+              -d build_parameters[CIRCLE_JOB]=build \
+              https://circleci.com/api/v1.1/project/gh/dhanu0001/sfcc-cd-project/build
+      
+      # - run:
+      #     name: Trigger the Build Job
+      #     command: |
+      #       printf "Triggering an "sfcc-cd-project" build on the Test-automation-builds branch\n\n"
 
-            BUILD_INFO=$(curl -X POST -H -d \
-                "{}" \
-                "https://circleci.com/api/v1/project/dhanu0001/sfcc-cd-project-A/tree/Test-automation-builds?circle-token=782ddf3c2db60b7ed64ac50489a16970899542c0")
+      #       BUILD_INFO=$(curl -X POST -H -d \
+      #           "{}" \
+      #           "https://circleci.com/api/v1/project/dhanu0001/sfcc-cd-project-A/tree/Test-automation-builds?circle-token=782ddf3c2db60b7ed64ac50489a16970899542c0")
 
-            printf "\n\nBuild triggered\n\n"
-            printf "Follow the progress of the build on \nhttps://circleci.com/gh/dhanu0001/sfcc-cd-project/tree/Test-automation-builds"
+      #       printf "\n\nBuild triggered\n\n"
+      #       printf "Follow the progress of the build on \nhttps://circleci.com/gh/dhanu0001/sfcc-cd-project/tree/Test-automation-builds"
             
 workflows:
   main-workflow:
