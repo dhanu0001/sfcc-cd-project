@@ -22,4 +22,8 @@ jobs:
             printf "Follow the progress of the build on \nhttps://circleci.com/gh/dhanu0001/sfcc-cd-project/tree/Test-automation-builds"
             
 workflows:
+jobs:
+  build:
+    docker:
+      - image: spotify/alpine
 
