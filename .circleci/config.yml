@@ -1,45 +1,35 @@
 version: 2.1
-executors:
-  java-executor:
-    docker:
-      - image: circleci/openjdk:11-jdk
 
-# Set parameter here
-parameters:
-  deploy_to_QA_Automation:
-    type: boolean
-    default: false
+orbs:
+  trigger: circleci/trigger@1.5.3
 
 jobs:
   build:
-    executor: java-executor
+    docker:
+      - image: circleci/openjdk:11-jdk
     steps:
       - checkout
-      - unless:
-          condition: << pipeline.parameters.deploy_to_QA_Automation >> # by default this is triggered
-          steps:
-            - run: # build
-  deploy_to_dev:
-    executor: java-executor
+      # build and test your sample here
+      - run: echo "test"
+
+  trigger_build:
+    executor: trigger/default
     steps:
-      - checkout
-      - when:
-         condition: << pipeline.parameters.deploy_to_QA_Automation >> # this would be triggered when you pass the parameter value via API
-         steps:
-           - run:
-               command: |
-                 echo "test-automation"
-#              command: |
-#                curl -u ${CIRCLECI_TOKEN}: -X POST --header "Content-Type: application/json" -d '{
-#                "parameters": {
-#                "deploy_to_dev": true
-#             }
-#          }' https://circleci.com/api/v2/project/${project_slug}/pipeline
-             
+      - trigger/build:
+          organization: dhanu0001
+          project: sfcc-cd-project-A
+          branch: Test-automation-builds
+          parameters:
+            # add any required parameters for the triggered build
 
 workflows:
   version: 2
-  build-deploy:
+  build-and-trigger:
     jobs:
-      - build
-      - deploy_to_dev
+      - build:
+          filters:
+            branches:
+              only: main
+      - trigger_build:
+          requires:
+            - build
