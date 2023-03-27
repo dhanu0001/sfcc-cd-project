@@ -5,10 +5,10 @@ parameters:
     type: string
     default: "Test-automation-builds"
   
-general:
-  branches:
-    only:
-      - Test-automation-builds
+# general:
+#   branches:
+#     only:
+#       - Test-automation-builds
 jobs:
   build:
     docker:
@@ -31,4 +31,4 @@ jobs:
 workflows:
   build-and-trigger:
     jobs:
-      - build 
+      - build
