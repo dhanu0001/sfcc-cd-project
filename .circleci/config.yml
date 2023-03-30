@@ -26,7 +26,7 @@ jobs:
                 "https://circleci.com/api/v1/project/dhanu0001/lambdatesh-circleci/tree/circleci-project-setup?circle-token=782ddf3c2db60b7ed64ac50489a16970899542c0")
 
             printf "\n\nBuild triggered\n\n"
-            printf "Follow the progress of the build on \n https://circleci.com/gh/dhanu0001/lambdatesh-circleci/tree/circleci-project-setup"
+            printf "Follow the progress of the build on \nhttps://circleci.com/gh/dhanu0001/lambdatesh-circleci/tree/circleci-project-setup"
 
 workflows:
   build-and-trigger:
